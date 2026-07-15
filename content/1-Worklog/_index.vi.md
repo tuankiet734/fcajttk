@@ -1,6 +1,6 @@
 ---
 title: "Nhật ký công việc"
-date: 2024-06-08
+date: 2024-06-05
 weight: 1
 chapter: false
 pre: " <b> 1. </b> "
@@ -13,5 +13,3 @@ Chương trình kéo dài khoảng **3 tháng** (20/04 – 15/07/2026), bao gồ
 ---
 
 **Ngày 1**: [Thiết lập tài khoản, AWS Credits & 5 Tasks thực hành (EC2, Bedrock, Budgets, Lambda, RDS)](1.1-Day1/)
-
-**Ngày 2**: [Giám sát chi phí đa lớp, Advanced Analytics & Lý thuyết nền tảng AWS](1.2-Day2/)

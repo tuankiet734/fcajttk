@@ -8,7 +8,7 @@ pre: " <b> 1.1. </b> "
 
 # Work Log: Account Setup, AWS Credits, and Core Guided Labs
 
-> **Day 1 - Monday, June 01, 2026:** Activated the AWS student account, requested initial credits, and successfully completed 5 foundational console tasks to secure additional promotional credits.
+> **Day 1 - Monday, June 05, 2026:** Activated the AWS student account, requested initial credits, and successfully completed 5 foundational console tasks to secure additional promotional credits.
 
 ---
 

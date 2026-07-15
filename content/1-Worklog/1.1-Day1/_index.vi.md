@@ -8,7 +8,7 @@ pre: " <b> 1.1. </b> "
 
 # Nhật Ký Làm Việc: Khởi Tạo Tài Khoản, Tích Lũy Credit và Thực Hành Các Dịch Vụ Cốt Lõi
 
-> **Ngày 1 - Thứ Hai, ngày 01/06/2026:** Kích hoạt tài khoản học tập AWS, nhận credit khởi đầu và hoàn thành 5 bài thực hành hướng dẫn trên console để nhận thêm credit khuyến mãi.
+> **Ngày 1 - Thứ Hai, ngày 05/06/2026:** Kích hoạt tài khoản học tập AWS, nhận credit khởi đầu và hoàn thành 5 bài thực hành hướng dẫn trên console để nhận thêm credit khuyến mãi.
 
 ---
 
