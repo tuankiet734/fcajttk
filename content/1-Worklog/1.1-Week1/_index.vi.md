@@ -1,5 +1,5 @@
 ---
-title: "Ngày 1"
+title: "Tuần 1"
 date: 2026-06-05
 weight: 1
 chapter: false
@@ -8,7 +8,7 @@ pre: " <b> 1.1. </b> "
 
 # Nhật Ký Làm Việc: Khởi Tạo Tài Khoản, Tích Lũy Credit và Thực Hành Các Dịch Vụ Cốt Lõi
 
-> **Ngày 1 - Thứ Hai, ngày 05/06/2026:** Kích hoạt tài khoản học tập AWS, nhận credit khởi đầu và hoàn thành 5 bài thực hành hướng dẫn trên console để nhận thêm credit khuyến mãi.
+> **Tuần 1 - Thứ Hai, ngày 05/06/2026:** Kích hoạt tài khoản học tập AWS, nhận credit khởi đầu và hoàn thành 5 bài thực hành hướng dẫn trên console để nhận thêm credit khuyến mãi.
 
 ---
 
@@ -129,7 +129,7 @@ pre: " <b> 1.1. </b> "
 
 ---
 
-### Tổng kết Ngày 1 & Bài học rút ra
+### Tổng kết Tuần 1 & Bài học rút ra
 
 - **Tích lũy Credit:** Nhận thành công $100 credit ban đầu và kiếm thêm $100 qua việc hoàn tất 5 nhiệm vụ thực hành (Tổng cộng tài khoản có **$200**).
 - **Trải nghiệm thực tiễn:** Tiếp cận trực tiếp cách vận hành của các dịch vụ cốt lõi: từ máy ảo (EC2), dịch vụ AI (Bedrock), hệ thống cảnh báo (Budgets), kiến trúc serverless (Lambda) đến cơ sở dữ liệu (RDS).

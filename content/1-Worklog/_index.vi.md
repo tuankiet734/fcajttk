@@ -12,4 +12,4 @@ Chương trình kéo dài khoảng **3 tháng** (20/04 – 15/07/2026), bao gồ
 
 ---
 
-**Ngày 1**: [Thiết lập tài khoản, AWS Credits & 5 Tasks thực hành (EC2, Bedrock, Budgets, Lambda, RDS)](1.1-Day1/)
+**Tuần 1**: [Thiết lập tài khoản, AWS Credits & 5 Tasks thực hành (EC2, Bedrock, Budgets, Lambda, RDS)](1.1-Week1/)
