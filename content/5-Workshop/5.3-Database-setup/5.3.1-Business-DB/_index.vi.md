@@ -8,44 +8,48 @@ pre : " <b> 5.3.1. </b> "
 
 ### 5.3.1. Khởi tạo Cơ sở dữ liệu nghiệp vụ (`fashion-rds`)
 
-Cơ sở dữ liệu trung tâm lưu trữ thông tin đơn hàng, giao dịch, sản phẩm và cửa hàng được thiết lập trên dịch vụ **Amazon RDS PostgreSQL** với các thông số chi tiết:
-* **Database Engine:** PostgreSQL 15.18
-* **Instance Class:** `db.t3.micro` (1 vCPU, 1 GiB RAM)
-* **DB Instance Identifier:** `fashion-rds`
-* **Master Username:** `dbadmin`
-* **Allocated Storage:** 20 GiB (GP2 SSD, Auto-scaling enabled)
-* **Database Name:** `fashiondb`
-* **VPC:** Default VPC (`vpc-0426acd9a3039dbc2`)
-* **Endpoint thực tế:** `fashion-rds.c7846wiue0od.ap-southeast-1.rds.amazonaws.com`
+Dưới đây là hướng dẫn chi tiết các bước khởi tạo CSDL nghiệp vụ bằng Amazon RDS PostgreSQL trên AWS Console:
 
----
+1. Đăng nhập vào AWS Management Console, tại thanh tìm kiếm trên cùng, gõ `RDS` và chọn dịch vụ **RDS**.
 
-#### Hướng dẫn chi tiết các bước khởi tạo trên AWS Console:
+![Truy cập dịch vụ RDS](/images/5-Workshop/5.3-Database-setup/5.3.1-step01-search-rds.png)
 
-1. **Truy cập dịch vụ:** Đăng nhập vào **AWS Management Console**, tại thanh tìm kiếm trên cùng, gõ `RDS` và chọn dịch vụ **RDS**.
-2. **Khởi tạo Database:** Trong giao diện RDS Dashboard, nhấp vào nút **Create database** màu cam.
-3. **Chọn phương thức khởi tạo:** Chọn **Standard create** để có thể tùy biến cấu hình chi tiết.
-4. **Chọn Engine Options:** 
-   * Chọn loại Engine là **PostgreSQL**.
-   * Tại mục **Engine Version**, nhấp vào menu thả xuống và chọn phiên bản **PostgreSQL 15.18-R1** hoặc phiên bản tương đương.
-5. **Chọn Template:** Chọn **Free Tier** để đảm bảo chi phí tối ưu (cấu hình này tự động giới hạn loại instance về `db.t3.micro` và ổ đĩa 20 GiB).
-6. **Cấu hình định danh (Settings):**
-   * **DB instance identifier:** Nhập `fashion-rds`.
-   * **Credentials specification:** 
-     * **Master username:** Nhập `dbadmin`.
-     * **Master password:** Nhập mật khẩu bảo mật của bạn.
-7. **Cấu hình Instance & Storage:** Giữ cấu hình mặc định là `db.t3.micro` và loại lưu trữ **gp2** với **20 GiB** dung lượng. Bật tùy chọn **Enable storage autoscaling**.
-8. **Cấu hình Kết nối mạng (Connectivity):**
-   * **Virtual Private Cloud (VPC):** Chọn Default VPC.
-   * **Public access:** Tích chọn **Yes** (Đảm bảo pgAdmin hoặc DBeaver từ máy cá nhân có thể kết nối thử nghiệm).
-   * **VPC security group:** Chọn **Create new**, đặt tên cho Security Group mới để cấu hình mạng.
-9. **Cấu hình bổ sung (Additional configuration):** Nhấp mở rộng phần này ở cuối trang:
-   * **Initial database name:** Nhập `fashiondb`.
-   * Giữ nguyên các cấu hình Backup và Encryption mặc định.
-10. **Hoàn tất:** Nhấp vào nút **Create database** ở cuối trang. Hệ thống sẽ mất khoảng 5-7 phút để khởi tạo máy chủ cơ sở dữ liệu.
+2. Trong giao diện RDS Dashboard, nhấp vào nút **Create database** màu cam.
 
----
+![RDS Dashboard](/images/5-Workshop/5.3-Database-setup/5.3.1-step02-rds-dashboard.png)
 
-#### Minh chứng thực tế trên AWS Console:
+3. Chọn phương thức khởi tạo **Standard create** để có thể tùy biến cấu hình chi tiết.
 
-![Central RDS Database](/images/5-Workshop/5.3-Database-setup/rds-all-databases.png)
+![Chọn phương thức Standard Create](/images/5-Workshop/5.3-Database-setup/5.3.1-step03-standard-create.png)
+
+4. Chọn loại Engine là **PostgreSQL** và chọn phiên bản mặc định phù hợp (ví dụ PostgreSQL 15.18-R1).
+
+![Chọn Engine PostgreSQL](/images/5-Workshop/5.3-Database-setup/5.3.1-step04-engine-postgresql.png)
+
+5. Chọn Template là **Free Tier** để đảm bảo tối ưu chi phí và sử dụng tài nguyên miễn phí.
+
+![Chọn Template Free Tier](/images/5-Workshop/5.3-Database-setup/5.3.1-step05-template-freetier.png)
+
+6. Tại mục Settings, nhập tên định danh CSDL là `fashion-rds` và cấu hình tài khoản quản trị master username là `dbadmin`.
+
+![Cấu hình Settings định danh](/images/5-Workshop/5.3-Database-setup/5.3.1-step06-settings-identifier.png)
+
+7. Cấu hình loại instance mặc định `db.t3.micro` và loại lưu trữ `gp2` với dung lượng `20 GiB`, đồng thời bật Storage Autoscaling.
+
+![Cấu hình Instance và Storage](/images/5-Workshop/5.3-Database-setup/5.3.1-step07-instance-storage.png)
+
+8. Cấu hình Connectivity: Chọn Default VPC, cấu hình Public access là **Yes** và chọn **Create new** VPC Security Group.
+
+![Cấu hình Connectivity](/images/5-Workshop/5.3-Database-setup/5.3.1-step08-connectivity.png)
+
+9. Cuộn xuống phần Additional configuration và nhập tên CSDL khởi tạo ban đầu là `fashiondb`.
+
+![Cấu hình Additional configuration](/images/5-Workshop/5.3-Database-setup/5.3.1-step09-additional-config.png)
+
+10. Xem lại ước tính chi phí ở cuối trang và nhấp vào nút **Create database** để bắt đầu tạo CSDL.
+
+![Nhấp nút Create Database](/images/5-Workshop/5.3-Database-setup/5.3.1-step10-create-button.png)
+
+11. Hệ thống bắt đầu khởi tạo CSDL với trạng thái **Creating**. Quá trình này mất khoảng 5-7 phút.
+
+![Trạng thái Creating trên RDS](/images/5-Workshop/5.3-Database-setup/5.3.1-step11-creating-status.png)

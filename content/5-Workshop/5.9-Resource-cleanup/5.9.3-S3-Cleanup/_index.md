@@ -23,5 +23,9 @@ Amazon S3 requires all objects inside a bucket to be permanently deleted before 
 
 #### Verification on Amazon S3:
 
-![Delete S3](/images/5-Workshop/5.9-Resource-cleanup/delete-s3.png)
+##### 1. Emptying S3 Bucket:
+![S3 Empty](/images/5-Workshop/5.9-Resource-cleanup/s3-empty.png)
+
+##### 2. Deleting S3 Bucket:
+![S3 Delete](/images/5-Workshop/5.9-Resource-cleanup/s3-delete.png)
 

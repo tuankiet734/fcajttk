@@ -8,28 +8,14 @@ pre : " <b> 5.4.3. </b> "
 
 ### 5.4.3. Spark ETL Feature Engineering Script (`glue_feature_engineering.py`)
 
-The core compute task is run via **Apache Spark** on **AWS Glue** to calculate historical time-series features across transactional lines.
+The core compute task is run via **Apache Spark** on **AWS Glue** to calculate historical time-series features.
 
----
+#### Step-by-Step Configuration of Spark Job:
 
-#### Step-by-Step Spark Job Creation on AWS Console:
+1. To connect Spark with PostgreSQL RDS, upload the PostgreSQL JDBC Driver `postgresql-42.7.3.jar` to S3, and enter the S3 path under **Job details** > **Libraries** > **Dependent jars path**.
 
-1. **Create New Job:** Navigate to AWS Glue -> **ETL jobs**, select **Spark script editor** and click **Create**.
-2. **Configure Job Details:**
-   * **Name:** Enter `glue_feature_engineering.py`.
-   * **IAM Role:** Select `de-fashion-glue-role`.
-   * **Language:** Select **Python or Spark**.
-3. **Scale Settings:**
-   * **Worker type:** Select **G.1X**.
-   * **Number of workers:** Set to **20** (or configure lower according to your AWS account quotas).
-4. **Load PostgreSQL JDBC Driver:**
-   * Upload the JDBC jar file `postgresql-42.7.3.jar` to your S3 bucket.
-   * In the job configurations page, navigate to **Job details** -> **Libraries** -> **Dependent jars path** and enter the S3 location (e.g., `s3://fashion-retail-model-storage/jars/postgresql-42.7.3.jar`).
-5. **Input Spark SQL Code:** Copy the time-series engineering Spark script from [glue_feature_engineering.py](file:///d:/b%C3%A1o%20c%C3%A1o%20AWS/source_code/glue_feature_engineering.py) and paste it into the script editor.
-6. **Save:** Click **Save**.
+![Configure Dependent Jars Path](/images/5-Workshop/5.4-Feature-extraction/5.4.3-step04-dependent-jars.png)
 
----
+2. Copy the Spark ETL code from [glue_feature_engineering.py](file:///d:/b%C3%A1o%20c%C3%A1o%20AWS/source_code/glue_feature_engineering.py) and paste it into the Glue Job script editor.
 
-#### AWS Console Proof of Operation:
-
-![AWS Glue Spark Feature Engineering Job](/images/5-Workshop/5.4-Feature-extraction/glue-lag-features.png)
+![Paste Spark Script into Editor](/images/5-Workshop/5.4-Feature-extraction/5.4.3-step05-spark-code.png)

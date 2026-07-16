@@ -8,44 +8,48 @@ pre : " <b> 5.3.1. </b> "
 
 ### 5.3.1. Initialize Business Database (`fashion-rds`)
 
-The central database storing sales orders, transactions, products, and store data is deployed on **Amazon RDS PostgreSQL** with the following detailed parameters:
-* **Database Engine:** PostgreSQL 15.18
-* **Instance Class:** `db.t3.micro` (1 vCPU, 1 GiB RAM)
-* **DB Instance Identifier:** `fashion-rds`
-* **Master Username:** `dbadmin`
-* **Allocated Storage:** 20 GiB (GP2 SSD, Auto-scaling enabled)
-* **Database Name:** `fashiondb`
-* **VPC:** Default VPC (`vpc-0426acd9a3039dbc2`)
-* **Actual Endpoint:** `fashion-rds.c7846wiue0od.ap-southeast-1.rds.amazonaws.com`
+Below is the detailed step-by-step guide to initialize the business database using Amazon RDS PostgreSQL on the AWS Console:
 
----
+1. Sign in to the AWS Management Console, search for `RDS` in the top search bar, and select the **RDS** service.
 
-#### Step-by-Step Creation Guide on AWS Console:
+![Access RDS service](/images/5-Workshop/5.3-Database-setup/5.3.1-step01-search-rds.png)
 
-1. **Access the Service:** Sign in to the **AWS Management Console**, search for `RDS` in the top search bar, and select **RDS**.
-2. **Create Database:** On the RDS Dashboard, click the orange **Create database** button.
-3. **Choose Creation Method:** Select **Standard create** to customize configuration details.
-4. **Select Engine Options:** 
-   * Select **PostgreSQL** as the Engine type.
-   * Under **Engine Version**, select **PostgreSQL 15.18-R1** from the dropdown list.
-5. **Select Template:** Select **Free Tier** to run within the free tier budget limits (automatically sets class to `db.t3.micro` and storage to 20 GiB).
-6. **Configure Settings:**
-   * **DB instance identifier:** Enter `fashion-rds`.
-   * **Credentials specification:** 
-     * **Master username:** Enter `dbadmin`.
-     * **Master password:** Enter your secure database password.
-7. **Instance & Storage Configuration:** Keep the default `db.t3.micro` class and **gp2** storage type with **20 GiB** capacity. Keep **Enable storage autoscaling** checked.
-8. **Configure Connectivity:**
-   * **Virtual Private Cloud (VPC):** Select the Default VPC.
-   * **Public access:** Check **Yes** (to allow direct querying from client tools like DBeaver/pgAdmin).
-   * **VPC security group:** Select **Create new** and provide a name for the security group.
-9. **Additional Configuration:** Click to expand this section at the bottom of the page:
-   * **Initial database name:** Enter `fashiondb`.
-   * Keep the default Backup and Encryption settings.
-10. **Finalize:** Click **Create database** at the bottom. It will take 5-7 minutes for the RDS instance to transition to the **Available** state.
+2. In the RDS Dashboard interface, click the orange **Create database** button.
 
----
+![RDS Dashboard](/images/5-Workshop/5.3-Database-setup/5.3.1-step02-rds-dashboard.png)
 
-#### AWS Console Proof of Operation:
+3. Select the **Standard create** method to customize detailed configurations.
 
-![Central RDS Database](/images/5-Workshop/5.3-Database-setup/rds-all-databases.png)
+![Select Standard Create](/images/5-Workshop/5.3-Database-setup/5.3.1-step03-standard-create.png)
+
+4. Select the Engine type as **PostgreSQL** and choose the appropriate default version (e.g. PostgreSQL 15.18-R1).
+
+![Select PostgreSQL Engine](/images/5-Workshop/5.3-Database-setup/5.3.1-step04-engine-postgresql.png)
+
+5. Select the Template as **Free Tier** to ensure cost optimization and use free tier resources.
+
+![Select Free Tier Template](/images/5-Workshop/5.3-Database-setup/5.3.1-step05-template-freetier.png)
+
+6. Under the Settings section, enter the DB instance identifier as `fashion-rds` and configure the administrative master username as `dbadmin`.
+
+![Configure Settings Identifier](/images/5-Workshop/5.3-Database-setup/5.3.1-step06-settings-identifier.png)
+
+7. Configure the default instance type `db.t3.micro` and storage type `gp2` with a capacity of `20 GiB`, and enable Storage Autoscaling.
+
+![Configure Instance and Storage](/images/5-Workshop/5.3-Database-setup/5.3.1-step07-instance-storage.png)
+
+8. Configure Connectivity: Select the Default VPC, set Public access to **Yes**, and choose **Create new** VPC Security Group.
+
+![Configure Connectivity](/images/5-Workshop/5.3-Database-setup/5.3.1-step08-connectivity.png)
+
+9. Scroll down to the Additional configuration section and enter the initial database name as `fashiondb`.
+
+![Configure Additional Configuration](/images/5-Workshop/5.3-Database-setup/5.3.1-step09-additional-config.png)
+
+10. Review the estimated costs at the bottom of the page and click the orange **Create database** button to start database creation.
+
+![Click Create Database Button](/images/5-Workshop/5.3-Database-setup/5.3.1-step10-create-button.png)
+
+11. The system begins initializing the database with the status **Creating**. This process takes approximately 5-7 minutes.
+
+![Creating Status on RDS](/images/5-Workshop/5.3-Database-setup/5.3.1-step11-creating-status.png)

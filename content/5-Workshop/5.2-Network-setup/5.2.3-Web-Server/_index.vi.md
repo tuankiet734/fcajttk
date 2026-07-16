@@ -14,12 +14,12 @@ Tiến hành khởi tạo một máy chủ ảo EC2 để đóng vai trò làm W
    * **Name and tags:** Nhập `Web-Application-Server`.
    * **OS Image (AMI):** Chọn `Ubuntu`, phiên bản `Ubuntu Server 26.04 LTS (HVM)`, SSD Volume Type.
    
-   ![Launch EC2 Instance](/images/5-Workshop/5.2-Network-setup/Screenshot%202026-07-14%20231937.png)
+   ![Launch EC2 Instance](/images/5-Workshop/5.2-Network-setup/3-Step1.png)
 2. **Bước 2:** Cấu hình khóa bảo mật và mạng cho máy chủ:
    * **Key pair:** Chọn Key pair của bạn để kết nối bảo mật.
    * **VPC:** Chọn VPC của hệ thống.
    * **Auto-assign public IP:** Chọn `Enable`.
    * **Firewall (security groups):** Tích chọn `Allow SSH traffic`, `Allow HTTPS traffic`, và `Allow HTTP traffic` để cho phép các lưu lượng mạng cần thiết.
    
-   ![EC2 Key Pair and Network Settings](/images/5-Workshop/5.2-Network-setup/Screenshot%202026-07-14%20231953.png)
+   ![EC2 Key Pair and Network Settings](/images/5-Workshop/5.2-Network-setup/3-Step2.png)
 3. **Bước 3:** Nhấn **Launch instance** để hoàn tất quá trình tạo máy chủ ảo.

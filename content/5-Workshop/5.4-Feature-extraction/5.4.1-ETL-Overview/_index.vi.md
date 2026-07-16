@@ -20,7 +20,7 @@ graph TD
     ProcessedFeatures -->|3. Ghi song song| TrainingDB[Training RDS]
 {{</mermaid>}}
 
-#### Chi tiết các bước thực hiện:
+#### Chi tiết quy trình xử lý dữ liệu:
 1. **Trích xuất dữ liệu thô (Extract):** Tác vụ python shell kết nối trực tiếp đến cơ sở dữ liệu `fashion-rds` để lấy các bảng giao dịch (`transactions`), sản phẩm (`products`), cửa hàng (`stores`) và lưu tạm thời lên Amazon S3 dưới dạng file Parquet.
-2. **Kỹ nghệ đặc trưng (Transform):** Tác vụ Spark phân tán đọc dữ liệu Parquet từ S3, xử lý làm sạch, điền giá trị khuyết (như giá trị trung bình giá bán của từng loại sản phẩm, màu sắc thịnh hành) và sử dụng các biểu thức **Window Functions** trong PySpark để tính toán các chỉ số đặc trưng theo chuỗi thời gian cho từng sản phẩm tại mỗi cửa hàng.
+2. **Kỹ nghệ đặc trưng (Transform):** Tác vụ Spark phân tán đọc dữ liệu Parquet từ S3, xử lý làm sạch và sử dụng Window Functions trong PySpark để tính toán các chỉ số đặc trưng theo chuỗi thời gian cho từng sản phẩm tại mỗi cửa hàng.
 3. **Lưu trữ dữ liệu xử lý (Load):** Ghi dữ liệu đặc trưng đã hoàn thiện xuống cả hai cơ sở dữ liệu để phục vụ kiểm tra và phục vụ trực tiếp cho tiến trình học máy.

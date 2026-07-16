@@ -29,3 +29,17 @@ Bước cuối cùng là dọn dẹp các dịch vụ serverless tính toán và
 ⚠️ **Cảnh báo dữ liệu:** Sau khi thực hiện xóa cơ sở dữ liệu RDS, các S3 Buckets, ECR Repositories và Lambda, toàn bộ dữ liệu giao dịch lịch sử, đặc trưng và tệp mô hình máy học đóng gói sẽ bị **xóa vĩnh viễn** và không thể phục hồi. Hãy chắc chắn bạn đã lưu trữ hoặc báo cáo tất cả các thông tin chỉ số cần thiết trước khi thực hiện dọn dẹp.
 {{% /notice %}}
 
+
+
+---
+
+#### Minh chứng dọn dẹp Glue & Lambda:
+
+##### 1. Xóa Glue ETL Jobs:
+![Glue Delete](/images/5-Workshop/5.9-Resource-cleanup/glue-delete.png)
+
+##### 2. Xóa Lambda Function:
+![Lambda Delete](/images/5-Workshop/5.9-Resource-cleanup/lambda-delete.png)
+
+##### 3. Xóa ECR Repository:
+![ECR Delete](/images/5-Workshop/5.9-Resource-cleanup/ecr-delete.png)

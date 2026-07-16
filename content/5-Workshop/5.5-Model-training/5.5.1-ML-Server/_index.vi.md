@@ -43,7 +43,5 @@ Quy trình huấn luyện mô hình học máy yêu cầu một máy chủ tính
 
 ---
 
-#### Minh chứng thực tế trên AWS Console:
-
 ![EC2 Server](/images/5-Workshop/5.5-Model-training/ec2-ml-server.png)
 

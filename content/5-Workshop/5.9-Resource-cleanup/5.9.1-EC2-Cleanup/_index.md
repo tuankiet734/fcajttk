@@ -21,3 +21,10 @@ To avoid ongoing computational costs from virtual machines and their attached EB
 > [!NOTE]
 > * The instance states will transition to `Shutting-down` and eventually to `Terminated`.
 > * Attached EBS (Elastic Block Store) volumes configured with "Delete on termination" will be automatically deleted to prevent persistent storage fees.
+
+
+---
+
+#### EC2 Resource Cleanup Evidence:
+
+![EC2 Terminate](/images/5-Workshop/5.9-Resource-cleanup/ec2-terminate.png)

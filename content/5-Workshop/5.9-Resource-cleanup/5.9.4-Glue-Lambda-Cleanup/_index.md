@@ -29,3 +29,17 @@ The final step is purging serverless compute resources, image repositories, and 
 ⚠️ **Warning:** Once RDS instances, S3 buckets, ECR repositories, and Lambda functions are deleted, all transaction history, precalculated feature tables, and serialized models are **permanently lost** and cannot be restored. Ensure you have copied all necessary performance metrics and logs before initiating cleanup.
 {{% /notice %}}
 
+
+
+---
+
+#### Glue & Lambda Cleanup Evidence:
+
+##### 1. Deleting AWS Glue ETL Jobs:
+![Glue Delete](/images/5-Workshop/5.9-Resource-cleanup/glue-delete.png)
+
+##### 2. Deleting AWS Lambda Function:
+![Lambda Delete](/images/5-Workshop/5.9-Resource-cleanup/lambda-delete.png)
+
+##### 3. Deleting Amazon ECR Repository:
+![ECR Delete](/images/5-Workshop/5.9-Resource-cleanup/ecr-delete.png)

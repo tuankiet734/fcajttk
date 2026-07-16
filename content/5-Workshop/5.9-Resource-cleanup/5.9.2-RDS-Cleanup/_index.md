@@ -25,3 +25,10 @@ To release the persistent database instances and stop incurring pricing charges,
 > [!WARNING]
 > Deleting RDS databases will permanently erase all transaction history tables, precalculated feature records (`final_daily`), and predicted demand outputs. Make sure to export necessary datasets to local CSV files if needed for report references before proceeding.
 
+
+
+---
+
+#### RDS Database Deletion Evidence:
+
+![RDS Delete](/images/5-Workshop/5.9-Resource-cleanup/rds-delete.png)

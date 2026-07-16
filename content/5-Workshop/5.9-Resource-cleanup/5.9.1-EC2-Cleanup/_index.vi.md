@@ -22,3 +22,10 @@ pre : " <b> 5.9.1. </b> "
 > * Trạng thái của instance sẽ chuyển sang `Shutting-down` và sau đó là `Terminated`.
 > * Các ổ đĩa lưu trữ EBS (Elastic Block Store) mặc định được thiết lập tự động xóa khi máy chủ bị xóa (*Delete on termination*), giúp giải phóng dung lượng lưu trữ hoàn toàn.
 
+
+
+---
+
+#### Minh chứng dọn dẹp máy chủ EC2:
+
+![EC2 Terminate](/images/5-Workshop/5.9-Resource-cleanup/ec2-terminate.png)

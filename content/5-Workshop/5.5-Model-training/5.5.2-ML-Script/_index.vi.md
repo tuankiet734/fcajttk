@@ -238,3 +238,10 @@ Uploaded standard_scaler.pkl successfully to s3://fashion-retail-model-storage/m
 Uploaded label_encoders.pkl successfully to s3://fashion-retail-model-storage/models/label_encoders.pkl
 ```
 
+---
+
+#### Minh chứng thực thi kịch bản huấn luyện:
+
+![Model Training Log](/images/5-Workshop/5.5-Model-training/train-log.png)
+
+

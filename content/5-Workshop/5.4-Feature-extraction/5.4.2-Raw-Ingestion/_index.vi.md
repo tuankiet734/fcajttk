@@ -10,17 +10,21 @@ pre : " <b> 5.4.2. </b> "
 
 Tác vụ đầu tiên chạy trên môi trường **AWS Glue Python Shell** để truy vấn trực tiếp cơ sở dữ liệu PostgreSQL nghiệp vụ và kết xuất file nén Parquet lên vùng đệm Landing Zone trên S3.
 
----
+#### Các bước khởi tạo và cấu hình AWS Glue Job:
 
-#### Hướng dẫn tạo Glue Job trên AWS Console:
+1. Truy cập dịch vụ **AWS Glue** trên AWS Management Console, tại thanh menu điều hướng bên trái, nhấp chọn **ETL jobs**.
 
-1. **Mở AWS Glue Console:** Truy cập dịch vụ **AWS Glue** trên AWS Console.
-2. **Tạo Job:** Ở danh sách menu bên trái, nhấp vào **ETL jobs** (trong mục **Data Integration and ETL**), sau đó chọn **Spark script editor** hoặc **Python Shell script editor** (chọn **Python Shell**).
-3. **Cấu hình Job Details:**
-   * **Name:** Đặt tên job là `de-fashion-rds-extract`.
-   * **IAM Role:** Chọn role `de-fashion-glue-role` (đã được cấp quyền truy cập S3 và VPC).
-   * **Python version:** Chọn `Python 3.9` hoặc phiên bản mới hơn.
-4. **Nhập Mã nguồn:** Sao chép toàn bộ mã nguồn bên dưới và dán vào trình biên tập code trực tuyến của Glue:
+![Mở AWS Glue ETL jobs](/images/5-Workshop/5.4-Feature-extraction/5.4.2-step01-glue-console.png)
+
+2. Đặt tên Job trong tab **Job details** là `de-fashion-rds-extract` và chọn IAM Role phù hợp là `de-fashion-glue-role`.
+
+![Cấu hình tên và Role cho Job](/images/5-Workshop/5.4-Feature-extraction/5.4.2-step03-job-name.png)
+
+3. Cấu hình **Python version** là `Python 3.9` hoặc phiên bản mới hơn.
+
+![Cấu hình Python Version](/images/5-Workshop/5.4-Feature-extraction/5.4.2-step04-python-version.png)
+
+4. Nhập mã nguồn Python dưới đây vào trình biên tập code trực tuyến (Script editor) của Glue Job:
 
 ```python
 import sys
@@ -56,17 +60,6 @@ stores.to_parquet(f"{base}/stores.parquet", index=False)
 print("Extract thanh cong!")
 ```
 
-5. **Cấu hình tham số chạy (Job parameters):** Cuộn xuống phần **Advanced properties** -> **Job parameters** và thêm các cặp Key/Value cụ thể của bạn:
-   * `--db_host`: `fashion-rds.c7846wiue0od.ap-southeast-1.rds.amazonaws.com`
-   * `--db_port`: `5432`
-   * `--db_name`: `fashiondb`
-   * `--db_user`: `dbadmin`
-   * `--db_pass`: *(Mật khẩu database của bạn)*
-   * `--s3_bucket`: `fashion-retail-model-storage`
-6. **Lưu Job:** Nhấp nút **Save** ở góc trên cùng bên phải.
+5. Cuộn xuống phần **Advanced properties** > **Job parameters** để cấu hình các tham số truyền vào CSDL PostgreSQL và Bucket S3.
 
----
-
-#### Minh chứng thực tế trên AWS Console:
-
-![AWS Glue Ingestion Job](/images/5-Workshop/5.4-Feature-extraction/glue-jdbc-config.png)
+![Cấu hình Job Parameters](/images/5-Workshop/5.4-Feature-extraction/5.4.2-step06-job-parameters.png)

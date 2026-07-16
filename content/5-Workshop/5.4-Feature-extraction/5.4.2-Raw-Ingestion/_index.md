@@ -10,17 +10,21 @@ pre : " <b> 5.4.2. </b> "
 
 The initial extraction task is deployed on **AWS Glue Python Shell** to query PostgreSQL tables and save the data in compressed Parquet files to the S3 Landing Zone.
 
----
+#### Step-by-Step Creation and Configuration of AWS Glue Job:
 
-#### Step-by-Step Glue Job Creation on AWS Console:
+1. Access the **AWS Glue** service on the AWS Management Console, and select **ETL jobs** on the left navigation menu.
 
-1. **Open AWS Glue:** Search for **AWS Glue** in the AWS Console.
-2. **Create Job:** Under **Data Integration and ETL** on the left menu, select **ETL jobs**. Choose **Python Shell script editor** and click **Create**.
-3. **Configure Job Details:**
-   * **Name:** Enter `de-fashion-rds-extract`.
-   * **IAM Role:** Select `de-fashion-glue-role` (with VPC and S3 read/write permissions).
-   * **Python version:** Select `Python 3.9` or latest.
-4. **Input Source Code:** Paste the following code into the online script editor pane:
+![Open AWS Glue ETL jobs](/images/5-Workshop/5.4-Feature-extraction/5.4.2-step01-glue-console.png)
+
+2. Set the Job name in the **Job details** tab as `de-fashion-rds-extract` and select the appropriate IAM Role `de-fashion-glue-role`.
+
+![Configure Job Name and Role](/images/5-Workshop/5.4-Feature-extraction/5.4.2-step03-job-name.png)
+
+3. Configure the **Python version** to `Python 3.9` or later.
+
+![Configure Python Version](/images/5-Workshop/5.4-Feature-extraction/5.4.2-step04-python-version.png)
+
+4. Enter the following Python source code into the Glue Job online script editor:
 
 ```python
 import sys
@@ -56,17 +60,6 @@ stores.to_parquet(f"{base}/stores.parquet", index=False)
 print("Extract thanh cong!")
 ```
 
-5. **Configure Run Parameters (Job parameters):** Expand **Advanced properties** -> **Job parameters** and add the following keys and values:
-   * `--db_host`: `fashion-rds.c7846wiue0od.ap-southeast-1.rds.amazonaws.com`
-   * `--db_port`: `5432`
-   * `--db_name`: `fashiondb`
-   * `--db_user`: `dbadmin`
-   * `--db_pass`: *(Your database password)*
-   * `--s3_bucket`: `fashion-retail-model-storage`
-6. **Save:** Click **Save** in the top-right corner.
+5. Scroll down to **Advanced properties** > **Job parameters** to configure database connection parameters and your S3 bucket.
 
----
-
-#### AWS Console Proof of Operation:
-
-![AWS Glue Ingestion Job](/images/5-Workshop/5.4-Feature-extraction/glue-jdbc-config.png)
+![Configure Job Parameters](/images/5-Workshop/5.4-Feature-extraction/5.4.2-step06-job-parameters.png)

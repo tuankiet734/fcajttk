@@ -25,3 +25,10 @@ pre : " <b> 5.9.2. </b> "
 > [!WARNING]
 > Việc xóa cơ sở dữ liệu RDS sẽ xóa sạch toàn bộ dữ liệu lịch sử giao dịch bán hàng, bảng đặc trưng `final_daily` và kết quả dự báo trong hệ thống. Hãy chắc chắn bạn đã trích xuất các bảng dữ liệu này ra file CSV cục bộ nếu cần lưu trữ kết quả báo cáo.
 
+
+
+---
+
+#### Minh chứng dọn dẹp cơ sở dữ liệu RDS:
+
+![RDS Delete](/images/5-Workshop/5.9-Resource-cleanup/rds-delete.png)

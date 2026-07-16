@@ -8,30 +8,39 @@ pre : " <b> 5.3.4. </b> "
 
 ### 5.3.4. Kiểm tra Kết nối và Thiết lập Bảng mẫu
 
-Sau khi hoàn tất khởi động cơ sở dữ liệu và mở các cổng Security Group, bước tiếp theo là xác minh kết nối từ bên ngoài và tiến hành thiết lập cấu trúc bảng nghiệp vụ cơ bản.
+Sau khi cấu hình hoàn tất mạng và cơ sở dữ liệu, chúng ta thực hiện kết nối cơ sở dữ liệu bằng DBeaver để thiết lập các bảng nghiệp vụ.
 
----
-
-#### Bước 1: Kiểm tra kết nối từ máy phát triển qua CLI (`psql`)
-
-Chạy các lệnh psql sau trong terminal để đảm bảo đường truyền thông suốt:
-
-##### Kết nối tới Central DB (cơ sở dữ liệu nghiệp vụ):
+#### CLI Connection (Tham khảo):
+Kết nối CSDL nghiệp vụ bằng CLI:
 ```bash
 psql -h fashion-rds.c7846wiue0od.ap-southeast-1.rds.amazonaws.com -p 5432 -U dbadmin -d fashiondb
 ```
-
-##### Kết nối tới Training DB (cơ sở dữ liệu lưu trữ đặc trưng):
+Kết nối CSDL huấn luyện bằng CLI:
 ```bash
 psql -h training-db.c7846wiue0od.ap-southeast-1.rds.amazonaws.com -p 5432 -U dbadmin -d fashiondb
 ```
-*(Sau khi chạy lệnh, nhập mật khẩu của bạn để kiểm tra dấu nhắc lệnh)*
 
 ---
 
-#### Bước 2: Thiết lập bảng mẫu trên Central DB (`fashion-rds`)
+#### Các bước kết nối bằng DBeaver và khởi tạo bảng mẫu:
 
-Sau khi kết nối thành công (sử dụng DBeaver, pgAdmin hoặc CLI), chạy tập lệnh SQL sau trên `fashion-rds` để khởi tạo các bảng nghiệp vụ chính:
+1. Mở phần mềm DBeaver, nhấp vào **Database** > **New Database Connection** và lựa chọn driver là **PostgreSQL**.
+
+![Tạo kết nối mới trong DBeaver](/images/5-Workshop/5.3-Database-setup/5.3.4-step03-dbeaver-newconn.png)
+
+2. Nhập các thông tin kết nối chi tiết bao gồm Host endpoint, Database name (`fashiondb`), Username (`dbadmin`) và Password.
+
+![Cấu hình thông tin kết nối](/images/5-Workshop/5.3-Database-setup/5.3.4-step04-dbeaver-config.png)
+
+3. Nhấp vào nút **Test Connection...** và xác nhận thông báo kết nối thành công (`Connected`).
+
+![Test Connection thành công](/images/5-Workshop/5.3-Database-setup/5.3.4-step05-dbeaver-testconnection.png)
+
+4. Thực hiện các bước tương tự cho cơ sở dữ liệu còn lại, đảm bảo DBeaver hiển thị đầy đủ cả hai kết nối cơ sở dữ liệu.
+
+![Cả hai kết nối cơ sở dữ liệu đã sẵn sàng](/images/5-Workshop/5.3-Database-setup/5.3.4-step06-dbeaver-both-connected.png)
+
+5. Mở SQL Editor trong DBeaver và chạy đoạn code SQL sau trên CSDL nghiệp vụ (`fashion-rds`) để tạo các bảng mẫu:
 
 ```sql
 -- 1. Bảng sản phẩm (products)
@@ -59,11 +68,4 @@ CREATE TABLE transactions (
 );
 ```
 
-Các dữ liệu thô này sẽ được công cụ ETL (AWS Glue) trích xuất hàng ngày để xử lý.
-
----
-
-#### Minh chứng thực tế trên AWS Console:
-Dưới đây là hình ảnh xác minh kết nối cơ sở dữ liệu qua DBeaver:
-
-![DBeaver Connections](/images/5-Workshop/5.3-Database-setup/dbeaver-connections.png)
+![Chạy SQL tạo bảng và kiểm tra cấu trúc bảng](/images/5-Workshop/5.3-Database-setup/5.3.4-step08-create-tables.png)

@@ -8,35 +8,32 @@ pre : " <b> 5.3.3. </b> "
 
 ### 5.3.3. Cấu hình Mạng và Bảo mật (Security & Network Groups)
 
-Để đảm bảo an toàn tối đa cho dữ liệu doanh nghiệp đồng thời cho phép các thành phần khác kết nối, cấu hình bảo mật được thiết lập chặt chẽ thông qua các quy tắc của **VPC Security Group**:
+Để đảm bảo kết nối an toàn cho hai cơ sở dữ liệu, chúng ta cần cấu hình quy tắc Inbound Rules cho VPC Security Group. Dưới đây là hướng dẫn chi tiết từng bước:
 
-* **Mã hóa lưu trữ (Storage Encryption):** Bật mã hóa ổ đĩa cho cả hai cơ sở dữ liệu sử dụng khóa mặc định của **AWS KMS** (`fe12be50-a2cf-44d1-a1da-3ce27e40686d`).
-* **Security Group định tuyến cổng:** `sg-0fecd1d2df90f2a69`
+1. Đăng nhập vào AWS Console, tìm kiếm dịch vụ **EC2** và chọn **Security Groups** trong mục **Network & Security** ở menu điều hướng bên trái.
 
----
+![Tìm Security Groups trên EC2 Console](/images/5-Workshop/5.3-Database-setup/5.3.3-step01-ec2-security-groups.png)
 
-#### Hướng dẫn chi tiết cấu hình Inbound Rules cho RDS:
+2. Chọn đúng Security Group tương ứng đang được áp dụng cho các RDS instance của bạn.
 
-1. **Mở EC2 Console:** Trên thanh công cụ AWS Console, truy cập dịch vụ **EC2**.
-2. **Chọn Security Groups:** Nhấp vào **Security Groups** trong mục **Network & Security** ở menu điều hướng bên trái.
-3. **Tìm kiếm Security Group:** Chọn Security Group tương ứng của RDS instance (ví dụ: `sg-0fecd1d2df90f2a69`).
-4. **Chỉnh sửa Inbound Rules:** Nhấp chọn tab **Inbound rules** ở nửa dưới màn hình và bấm nút **Edit inbound rules**.
-5. **Cấu hình 3 quy tắc kết nối bắt buộc:**
-   * **Quy tắc 1 (Truy cập của nhà phát triển):** 
-     * **Type:** Chọn `PostgreSQL` (Cổng mặc định `5432`).
-     * **Source:** Chọn **My IP** (Tự động điền IP public hiện tại của máy tính bạn). Quy tắc này cho phép pgAdmin/DBeaver kết nối trực tiếp.
-   * **Quy tắc 2 (Truy cập từ Máy chủ huấn luyện EC2):**
-     * **Type:** Chọn `PostgreSQL` (Cổng mặc định `5432`).
-     * **Source:** Chọn **Custom** và nhập mã ID Security Group của máy chủ `ML-Forecast-Server` (`sg-0579af9926812195b`).
-   * **Quy tắc 3 (Truy cập cho AWS Glue kết nối JDBC):**
-     * **Type:** Chọn `PostgreSQL` (Cổng mặc định `5432`).
-     * **Source:** Chọn **Custom** và nhập lại chính mã ID Security Group này (`sg-0fecd1d2df90f2a69` - Self-referencing rule).
-6. **Lưu cấu hình:** Nhấp vào nút **Save rules** để áp dụng.
+![Chọn Security Group của RDS](/images/5-Workshop/5.3-Database-setup/5.3.3-step02-select-sg.png)
 
----
+3. Nhấp chọn tab **Inbound rules** ở nửa dưới màn hình và chọn **Edit inbound rules**.
 
-#### Minh chứng hoạt động trên AWS Console:
+![Chỉnh sửa Inbound Rules](/images/5-Workshop/5.3-Database-setup/5.3.3-step03-edit-inbound.png)
 
-Dưới đây là hình ảnh cấu hình luật Inbound Rules của Security Group trên AWS Management Console:
+4. Thêm quy tắc đầu tiên (Rule 1): Chọn Type là `PostgreSQL` (cổng `5432`), chọn Source là **My IP** để cho phép máy cá nhân kết nối.
 
-![Security Group Inbound Rules](/images/5-Workshop/5.3-Database-setup/security-group-inbound-rules.png)
+![Cấu hình Rule 1 cho IP cá nhân](/images/5-Workshop/5.3-Database-setup/5.3.3-step04-rule1-myip.png)
+
+5. Thêm quy tắc thứ hai (Rule 2): Chọn Type là `PostgreSQL`, chọn Source là **Custom** và nhập mã ID Security Group của máy chủ huấn luyện `ML-Forecast-Server`.
+
+![Cấu hình Rule 2 cho EC2 Server](/images/5-Workshop/5.3-Database-setup/5.3.3-step05-rule2-ec2sg.png)
+
+6. Thêm quy tắc thứ ba (Rule 3): Chọn Type là `PostgreSQL`, chọn Source là **Custom** và nhập lại chính mã ID Security Group hiện tại để tự tham chiếu (Self-referencing) phục vụ kết nối AWS Glue.
+
+![Cấu hình Rule 3 cho AWS Glue tự tham chiếu](/images/5-Workshop/5.3-Database-setup/5.3.3-step06-rule3-selfreference.png)
+
+7. Kiểm tra lại toàn bộ quy tắc đã thêm và nhấp vào nút **Save rules** để áp dụng.
+
+![Lưu cấu hình Security Group thành công](/images/5-Workshop/5.3-Database-setup/5.3.3-step07-saved-rules.png)
