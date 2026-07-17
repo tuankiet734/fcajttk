@@ -21,7 +21,7 @@ The entire pipeline is orchestrated to run daily via Amazon EventBridge, ensurin
 
 > 📌 **System Architecture Diagram:**
 >
-> ![Fashion Retail Web App & ML Pipeline Architecture](/AWS/images/5-Workshop/5.1-Workshop-overview/diagram1.png)
+> ![Fashion Retail Web App & ML Pipeline Architecture](\images\2-Proposal\new_architecture.jpg)
 
 **Platform at a glance:**
 
@@ -125,29 +125,28 @@ The solution consists of **six functional layers** that separate storefront traf
 
 ---
 
-### 4.2. Detailed Layer Operations
+### 4.2. Detailed Layer Operations & System Data Flow
 
-#### 1. Web Application & API Group (User Access Layer)
-* **Amazon CloudFront** caches static images, styles, and scripts globally, minimizing loading times and reducing hits on the backend.
-* **External ALB** handles public HTTPS traffic and distributes it across the **Web Application Auto Scaling Group** (EC2 instances running the customer portal).
-* **Internal ALB** acts as an internal gateway, taking internal API requests from the Web Application servers and distributing them to the **RESTful API Auto Scaling Group** (EC2 instances handling checkout and payment logic).
+The end-to-end data processing and traffic flow follow the sequence illustrated in the system architecture:
 
-#### 2. Database Layer
-* **`fashion-rds`** handles OLTP transactions. Under-the-hood schema separation prevents analytical queries from locking transactional tables.
-* **`training-db`** stores pre-calculated features. It is completely decoupled from `fashion-rds`, so ML training jobs do not affect web performance.
+#### A. User Storefront Traffic Flow
+* **(1) User to CloudFront:** The **User** sends requests to the application storefront via **Amazon CloudFront**, which delivers cached static content at low latency.
+* **(2) CloudFront to External ALB:** Dynamic requests that cannot be cached are forwarded to the public-facing **External ALB**.
+* **(3) External ALB to Web Application:** The **External ALB** balances and routes the public HTTPS traffic into the frontend web layer inside the **Web Application Auto Scaling Group**.
+* **(4) Web Application to Internal ALB:** The Web Application instances pass core logical or transactional API calls through the secure **Internal ALB**.
+* **(5) Internal ALB to RESTful API:** The **Internal ALB** distributes incoming internal requests to the microservices running within the **RESTful API Auto Scaling Group**.
+* **(6) RESTful API to Central Database:** The API layer processes the business logic and updates transaction records, order statuses, and inventories directly into the **Central Database** (`fashion-rds`).
 
-#### 3. Ingestion & Feature Engineering Layer
-* **`de-fashion-rds-extract` (AWS Glue Python Shell)**: Runs daily, extracting transaction records from `fashion-rds` and exporting them as compressed Parquet files to an S3 staging prefix.
-* **`glue_feature_engineering.py` (AWS Glue PySpark)**: Reads Parquet files from S3, computes 7-day lags, rolling averages, and sales velocities, and writes the structured features into the isolated `training-db` RDS instance.
+#### B. Automated Data Engineering & MLOps Pipeline
+* **(7) Central Database to Feature Extraction:** On a daily automated cycle, raw transaction entries are extracted from the **Central Database** using **AWS Glue** (Python Shell) and landed onto an Amazon S3 staging area.
+* **(8) Feature Extraction to Training Database:** The **AWS Glue PySpark** script ingests the raw data from S3, computes advanced time-series metrics (such as 7-day lags, rolling averages, and velocities), and saves them into the decoupled **Training Database** (`training-db`).
+* **(9) Training Database to Training Model:** The **Training Model** instance (`ML-Forecast-Server` on EC2) pulls the latest daily pre-calculated tables from the **Training Database** to execute model training.
+* **(10) Training Model to Model Storage:** Once training completes, the finalized machine learning artifacts are pushed and stored safely in **Model Storage** (Amazon S3).
 
-#### 4. Model Training & Storage
-* **`ML-Forecast-Server` (EC2)**: Automatically starts, reads the feature tables from `training-db`, trains the forecasting model, uploads the finalized model artifacts to the `fashion-retail-model-storage` S3 bucket, and shuts down to save costs.
-
-#### 5. Forecast API & Orchestration
-* **AWS Lambda & API Gateway**: A serverless forecast API. When requested, Lambda retrieves the model from S3, predicts the sales forecast, and returns it.
-* **Amazon EventBridge**: Triggers the Daily ETL and model retraining jobs sequentially every night.
-
----
+#### C. Orchestration & Inference Serving
+* **(11) Daily Schedule Trigger:** **Amazon EventBridge** (acting as the **Daily Schedule**) coordinates the end-to-end automation, triggering the ETL and model update procedures at off-peak hours.
+* **(12) Model Storage to Model API:** The **Model API** (powered serverless via AWS Lambda) dynamically fetches the up-to-date model artifacts from **Model Storage** to perform real-time demand inference.
+* **(13) Model API to Training Database:** The serverless inference layer or storefront administrators can interface with the **Training Database** via the **Model API** to cross-reference or update historical tracking benchmarks.
 
 ## 5. Technical Implementation
 
@@ -155,12 +154,12 @@ The solution consists of **six functional layers** that separate storefront traf
 
 The project implementation is divided into four main phases:
 
-```mermaid
+{{<mermaid>}}
 graph TD
     Phase1[Phase 1: Design & Networking Setup] --> Phase2[Phase 2: DB & Web Server Deployment]
     Phase2 --> Phase3[Phase 3: Glue ETL & Spark Feature Pipeline]
     Phase3 --> Phase4[Phase 4: ML Training, Serving API & EventBridge Automation]
-```
+{{</mermaid>}}
 
 1. **Phase 1: Networking & IAM Security Setup**
    * Create public and private subnets across multiple Availability Zones.

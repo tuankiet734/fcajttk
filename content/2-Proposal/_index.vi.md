@@ -21,7 +21,7 @@ Toàn bộ pipeline được điều phối tự động chạy hàng ngày qua 
 
 > 📌 **Sơ đồ kiến trúc tổng thể:**
 >
-> ![Fashion Retail Web App & ML Pipeline Architecture](/AWS/images/5-Workshop/5.1-Workshop-overview/diagram1.png)
+> ![Fashion Retail Web App & ML Pipeline Architecture](\images\2-Proposal\new_architecture.jpg)
 
 **Tổng quan nền tảng:**
 
@@ -125,29 +125,28 @@ Giải pháp được tổ chức thành **sáu lớp chức năng** giúp tách
 
 ---
 
-### 4.2. Chi tiết hoạt động các lớp
+### 4.2. Chi tiết hoạt động và Luồng xử lý dữ liệu hệ thống
 
-#### 1. Nhóm Ứng dụng Web & API (Lớp truy cập người dùng)
-* **Amazon CloudFront** đóng vai trò CDN lưu trữ đệm các tệp hình ảnh sản phẩm, CSS, JS trên toàn cầu, giúp giảm thời gian tải trang và giảm thiểu yêu cầu gửi trực tiếp đến máy chủ gốc.
-* **External ALB** tiếp nhận lưu lượng HTTPS công khai từ người dùng và phân phối đều tới các thực thể trong **Web Application Auto Scaling Group** (EC2 chạy giao diện cửa hàng).
-* **Internal ALB** đóng vai trò cổng bảo mật bên trong, tiếp nhận API call từ Web App chuyển đến **RESTful API Auto Scaling Group** (EC2 xử lý giỏ hàng, thanh toán và thông tin cá nhân).
+Quy trình xử lý dữ liệu end-to-end và điều phối lưu lượng được cấu trúc tuần tự theo các bước đánh số trên sơ đồ kiến trúc:
 
-#### 2. Lớp Cơ sở dữ liệu
-* **`fashion-rds`** phục vụ tác vụ OLTP giao dịch hàng ngày. Cấu trúc bảng và phân quyền được tối ưu hóa để không bị ảnh hưởng bởi quá trình trích xuất.
-* **`training-db`** lưu trữ các bảng đặc trưng đã tính toán xong. Cơ sở dữ liệu này hoàn toàn độc lập với database sản xuất, đảm bảo việc truy cập dữ liệu học máy không làm chậm website.
+#### A. Luồng truy cập Giao diện Web và Mua sắm (Storefront Traffic)
+* **(1) User đến CloudFront:** **Người dùng (User)** truy cập vào hệ thống cửa hàng thông qua **Amazon CloudFront**, giúp phân phối nhanh các nội dung tĩnh đã được lưu đệm.
+* **(2) CloudFront đến External ALB:** Các yêu cầu động (dynamic requests) không thể lưu bộ nhớ đệm sẽ được chuyển tiếp đến bộ cân bằng tải công khai **External ALB**.
+* **(3) External ALB đến Web Application:** **External ALB** điều hướng và cân bằng tải lượng truy cập HTTPS công cộng vào lớp frontend nằm trong nhóm **Web Application Auto Scaling Group**.
+* **(4) Web Application đến Internal ALB:** Các thực thể Web Application chuyển tiếp các yêu cầu gọi API nghiệp vụ lõi hoặc giao dịch qua bộ cân bằng tải nội bộ **Internal ALB**.
+* **(5) Internal ALB đến RESTful API:** **Internal ALB** phân phối các yêu cầu nội bộ đến các microservice đang vận hành bên trong nhóm **RESTful API Auto Scaling Group**.
+* **(6) RESTful API đến Central Database:** Lớp API xử lý logic nghiệp vụ và ghi nhận/cập nhật trực tiếp dữ liệu đơn hàng, trạng thái giao dịch vào cơ sở dữ liệu sản xuất chính **Central Database** (`fashion-rds`).
 
-#### 3. Lớp Tiếp nhận dữ liệu & Kỹ thuật đặc trưng (ETL)
-* **`de-fashion-rds-extract` (AWS Glue Python Shell)**: Chạy hàng ngày để lấy dữ liệu giao dịch từ `fashion-rds` và đẩy sang lưu trữ dưới dạng Parquet nén trên S3 landing zone.
-* **`glue_feature_engineering.py` (AWS Glue PySpark)**: Đọc tệp Parquet từ S3, thực hiện tính toán song song các chỉ số lag 7 ngày, trung bình trượt và vận tốc bán hàng, sau đó ghi các đặc trưng này vào cơ sở dữ liệu độc lập `training-db`.
+#### B. Pipeline Kỹ thuật dữ liệu & MLOps tự động
+* **(7) Central Database đến Feature Extraction:** Theo chu kỳ tự động hàng ngày, dữ liệu giao dịch thô được trích xuất từ **Central Database** thông qua công cụ **Feature Extraction** (AWS Glue Python Shell) và đưa về vùng đệm trên S3.
+* **(8) Feature Extraction đến Training Database:** Mã nguồn **AWS Glue PySpark** tiếp nhận dữ liệu thô từ S3, tính toán các đặc trưng chuỗi thời gian nâng cao (lag 7 ngày, trung bình trượt, vận tốc bán hàng) rồi lưu trữ vào cơ sở dữ liệu biệt lập **Training Database** (`training-db`).
+* **(9) Training Database đến Training Model:** Máy chủ huấn luyện mô hình **Training Model** (`ML-Forecast-Server` chạy trên EC2) nạp các bảng đặc trưng mới nhất từ **Training Database** để tiến hành huấn luyện mô hình.
+* **(10) Training Model đến Model Storage:** Sau khi hoàn tất quá trình huấn luyện, sản phẩm mô hình (artifacts) sẽ được đẩy lên và lưu trữ an toàn tại **Model Storage** (Amazon S3).
 
-#### 4. Huấn luyện & Lưu trữ Mô hình
-* **`ML-Forecast-Server` (EC2)**: Được thiết lập tự động khởi động vào ban đêm, đọc bảng đặc trưng từ `training-db`, chạy mã huấn luyện mô hình hồi quy, tải sản phẩm mô hình (model artifacts) lên S3 bucket `fashion-retail-model-storage` và tự động tắt máy.
-
-#### 5. Cung cấp API Dự báo & Điều phối
-* **AWS Lambda & API Gateway**: Điểm cuối API serverless. Khi nhận yêu cầu dự báo, Lambda tải mô hình mới nhất từ S3 về để dự đoán doanh số và trả kết quả ngay lập tức.
-* **Amazon EventBridge**: Điều phối chạy tuần tự các job Glue ETL và job huấn luyện ML vào mỗi đêm mà không cần can thiệp thủ công.
-
----
+#### C. Điều phối hệ thống & Phục vụ dự báo
+* **(11) Kích hoạt từ Daily Schedule:** Bộ lập lịch **Daily Schedule** (Amazon EventBridge) đóng vai trò điều phối tự động toàn diện, kích hoạt tiến trình chạy tuần tự các tác vụ ETL và cập nhật mô hình vào khung giờ thấp điểm.
+* **(12) Model Storage đến Model API:** Thành phần **Model API** (Triển khai không máy chủ qua AWS Lambda) tự động tải tệp mô hình mới nhất từ **Model Storage** để thực hiện suy luận dự báo nhu cầu theo thời gian thực.
+* **(13) Model API đến Training Database:** Lớp API phục vụ dự báo (hoặc quản trị viên) có thể tương tác với **Training Database** thông qua **Model API** để đối chiếu, lưu vết hoặc cập nhật các chỉ số đánh giá lịch sử.
 
 ## 5. Triển khai kỹ thuật
 
@@ -155,12 +154,12 @@ Giải pháp được tổ chức thành **sáu lớp chức năng** giúp tách
 
 Dự án được chia thành 4 giai đoạn triển khai chính:
 
-```mermaid
+{{<mermaid>}}
 graph TD
     Phase1[Giai đoạn 1: Thiết kế & Cấu hình Mạng] --> Phase2[Giai đoạn 2: Triển khai DB & Máy chủ Web]
     Phase2 --> Phase3[Giai đoạn 3: Xây dựng Pipeline Glue ETL & Spark]
     Phase3 --> Phase4[Giai đoạn 4: Huấn luyện ML, Điểm cuối API & Tự động hóa EventBridge]
-```
+{{</mermaid>}}
 
 1. **Giai đoạn 1: Cấu hình Mạng & Bảo mật IAM**
    * Thiết lập VPC, tạo các subnet công khai và riêng tư trên nhiều Availability Zone.

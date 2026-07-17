@@ -1,17 +1,2 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-	<channel>
-		<title>Internship Report</title>
-		<link>https://trantrongthanh115.github.io/AWS/</link>
-		<description>Recent content on Internship Report</description>
-		<generator>Hugo</generator>
-		<language>en</language>
-		
-		
-		
-		
-			<lastBuildDate></lastBuildDate>
-		
-			<atom:link href="https://trantrongthanh115.github.io/AWS/index.xml" rel="self" type="application/rss+xml" />
-	</channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Internship Report</title><link>https://tuankiet734.github.io/fcajttk/</link><description>Recent content on Internship Report</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sun, 07 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://tuankiet734.github.io/fcajttk/index.xml" rel="self" type="application/rss+xml"/><item><title>Tự đánh giá</title><link>https://tuankiet734.github.io/fcajttk/6-self-evaluation/_index.vn/</link><pubDate>Sun, 07 Jul 2024 00:00:00 +0000</pubDate><guid>https://tuankiet734.github.io/fcajttk/6-self-evaluation/_index.vn/</guid><description>&lt;p&gt;Ba tháng thực tập tại &lt;strong&gt;Công ty TNHH Amazon Web Services Việt Nam (AWS Vietnam)&lt;/strong&gt; — từ &lt;strong&gt;20/04/2026&lt;/strong&gt; đến &lt;strong&gt;15/07/2026&lt;/strong&gt; — là một cột mốc quan trọng giúp tôi chuyển hóa kiến thức học thuật thành năng lực thực chiến trên môi trường đám mây thực tế.&lt;/p&gt;
+&lt;p&gt;Trong kỳ thực tập này, tôi đóng góp vào &lt;strong&gt;việc thiết kế và triển khai ứng dụng web bán lẻ thời trang có tính sẵn sàng cao, tích hợp với pipeline học máy tự động dự báo doanh số bán hàng trên nền tảng AWS&lt;/strong&gt;. Quá trình đó giúp tôi nâng cao chuyên môn trên nhiều lĩnh vực: &lt;strong&gt;kiến trúc hạ tầng đám mây, quản trị cơ sở dữ liệu quan hệ (RDS PostgreSQL), phát triển ứng dụng serverless (Lambda &amp;amp; API Gateway), kỹ thuật dữ liệu quy mô lớn (AWS Glue &amp;amp; PySpark) và vận hành mô hình học máy (MLOps)&lt;/strong&gt;.&lt;/p&gt;</description></item></channel></rss>
