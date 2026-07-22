@@ -6,7 +6,7 @@ chapter: false
 ---
 
 # Báo cáo thực tập
-### Thông tin sinh viên 3:
+### Thông tin sinh viên :
 &emsp; **Họ và tên:** Trần Tuấn Kiệt
 
 &emsp; **Số điện thoại:** 0392128734
