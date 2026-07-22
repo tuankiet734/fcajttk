@@ -6,7 +6,7 @@ chapter: false
 ---
     
 # Internship Report
-### Student 3 Information:
+### Student  Information:
 &emsp; **Full Name:** Tran Tuan Kiet
 
 &emsp; **Phone Number:** 0392128734
